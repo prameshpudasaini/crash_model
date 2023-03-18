@@ -95,3 +95,33 @@ stargazer(m_ppos_kabco, m_ppos_ka, m_ppos_bc, m_ppos_o,
           star.cutoffs = c(.05, .01, .001),
           title = "Model 3: Difference between Posted Speed Limit & Operating Speed Percentiles",
           no.space = TRUE, digits = 3)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Model 4: Difference between Posted Speed Limit & Operating Speed Percentiles
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# without PSL
+
+ppos_kabco <- mdata %>% 
+    dplyr::select(KABCO, AADT, PSL, Length, Road_Class, PSL_P15, PSL_P50, P85_PSL)
+ppos_ka <- mdata %>% 
+    dplyr::select(K_A, AADT, PSL, Length, Road_Class, PSL_P15, PSL_P50, P85_PSL)
+ppos_bc <- mdata %>% 
+    dplyr::select(B_C, AADT, PSL, Length, Road_Class, PSL_P15, PSL_P50, P85_PSL)
+ppos_o <- mdata %>% 
+    dplyr::select(O, AADT, PSL, Length, Road_Class, PSL_P15, PSL_P50, P85_PSL)
+
+m_ppos_kabco <- glm.nb(KABCO ~ log(AADT) + Length + Road_Class + PSL_P15 + PSL_P50 + P85_PSL,
+                       data = ppos_kabco)
+m_ppos_ka <- glm.nb(K_A ~ log(AADT) + Length + Road_Class + PSL_P15 + PSL_P50 + P85_PSL,
+                    data = ppos_ka)
+m_ppos_bc <- glm.nb(B_C ~ log(AADT) + Length + Road_Class + PSL_P15 + PSL_P50 + P85_PSL,
+                    data = ppos_bc)
+m_ppos_o <- glm.nb(O ~ log(AADT) + Length + Road_Class + PSL_P15 + PSL_P50 + P85_PSL,
+                   data = ppos_o)
+
+stargazer(m_ppos_kabco, m_ppos_ka, m_ppos_bc, m_ppos_o, 
+          type = "html", 
+          out = "output/m4_wo_psl_diff_psl_operating_speed_percentiles.html",
+          star.cutoffs = c(.05, .01, .001),
+          title = "Model 4: Difference between Posted Speed Limit (w/o) & Operating Speed Percentiles",
+          no.space = TRUE, digits = 3)
